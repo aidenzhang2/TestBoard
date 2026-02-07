@@ -2,6 +2,7 @@ package com.adambots;
 
 import com.adambots.lib.actuators.BaseMotor;
 import com.adambots.lib.actuators.TalonFXMotor;
+import com.adambots.lib.sensors.LimitSwitch;
 
 /**
  * RobotMap defines all hardware port assignments and motor instances for TestBoard.

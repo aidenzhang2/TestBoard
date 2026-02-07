@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 import com.adambots.commands.ShootCommand;
-import com.adambots.subsystems.HopperSubsystem;
+import com.adambots.lib.sensors.LimitSwitch;
 import com.adambots.subsystems.ShooterSubsystem;
 
 /**
@@ -29,7 +29,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         // Initialize subsystems with motors from RobotMap
-        shooter = new ShooterSubsystem(RobotMap.x60, RobotMap.x40);
+        shooter = new ShooterSubsystem(RobotMap.x60, RobotMap.x40, RobotMap.limitSwitch1, RobotMap.limitSwitch1);
         setupDashboard();
     }
 
@@ -62,6 +62,7 @@ public class RobotContainer {
         // Subsystem status (row 2)
         shooterTab.add("Shooter Subsystem", shooter)
             .withPosition(0, 2).withSize(3, 2);
+    }
 
       
     public Command getAutonomousCommand() {

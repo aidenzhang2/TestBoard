@@ -5,7 +5,9 @@ import static edu.wpi.first.units.Units.RPM;
 import com.adambots.Constants.ShooterConstants;
 import com.adambots.RobotMap;
 import com.adambots.lib.actuators.BaseMotor;
+import com.adambots.lib.sensors.LimitSwitch;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -33,14 +35,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // Right motor follows left motor in opposite direction (for shooter wheels)
         x60.setInverted(true);
-        x60.setStrictFollower(RobotMap.kShooterLeftPort);
+        x60.setStrictFollower(RobotMap.x60Port);
     }
 
     /**
      * Run the shooter at the configured speed.
      */
-    public void runShooter() {
-        x40.set(ShooterConstants.kShooterSpeed);
+    public Command runShooter() {
+        return runOnce(()->x40.set(ShooterConstants.kShooterSpeed));
     }
 
     /**
@@ -50,12 +52,13 @@ public class ShooterSubsystem extends SubsystemBase {
         x40.set(-ShooterConstants.kShooterSpeed);
     }
 
-    public void runx60() {
-        x60.set(ShooterConstants.kShooterSpeed);
+    public Command runx60() {
+        return runOnce(()->x60.set(ShooterConstants.kShooterSpeed));
     }
 
-    public void runx40() {
-        x40.set(ShooterConstants.kShooterSpeed);
+    public Command runx40() {
+        return runOnce(()->x40.set(ShooterConstants.kShooterSpeed));
+        
     }
     /**
      * Stop the shooter motors.
@@ -105,11 +108,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command runKrakenx60() {
-        return runEnd(this::runx60, this::stopShooter)
+        return runEnd(this::runx60, this::stopShooter);
     }
 
     public Command runKrakenx40() {
-        return runEnd(this::runx40, this::stopShooter)
+        return runEnd(this::runx40, this::stopShooter);
     }
     @Override
     public void periodic() {
