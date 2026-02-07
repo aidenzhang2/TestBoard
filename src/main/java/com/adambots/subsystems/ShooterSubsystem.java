@@ -14,57 +14,68 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class ShooterSubsystem extends SubsystemBase {
 
-    private final BaseMotor leftMotor;
-    private final BaseMotor rightMotor;
+    private final BaseMotor x60;
+    private final BaseMotor x40;
+    private final LimitSwitch limitSwitch1;
+    private final LimitSwitch limitSwitch2;
 
-    public ShooterSubsystem(BaseMotor leftMotor, BaseMotor rightMotor) {
-        this.leftMotor = leftMotor;
-        this.rightMotor = rightMotor;
+    public ShooterSubsystem(BaseMotor x60, BaseMotor x40, LimitSwitch limitSwitch1, LimitSwitch limitSwitch2) {
+        this.x60 = x60;
+        this.x40 = x40;
+        this.limitSwitch1 = limitSwitch1; 
+        this.limitSwitch2 = limitSwitch2;
         configureMotors();
     }
 
     private void configureMotors() {
-        leftMotor.setBrakeMode(false);  // Coast mode for shooter wheels
-        rightMotor.setBrakeMode(false);
+        x40.setBrakeMode(false);  // Coast mode for shooter wheels
+        x60.setBrakeMode(false);
 
         // Right motor follows left motor in opposite direction (for shooter wheels)
-        rightMotor.setInverted(true);
-        rightMotor.setStrictFollower(RobotMap.kShooterLeftPort);
+        x60.setInverted(true);
+        x60.setStrictFollower(RobotMap.kShooterLeftPort);
     }
 
     /**
      * Run the shooter at the configured speed.
      */
     public void runShooter() {
-        leftMotor.set(ShooterConstants.kShooterSpeed);
+        x40.set(ShooterConstants.kShooterSpeed);
     }
 
     /**
      * Run the shooter in reverse.
      */
     public void reverseShooter() {
-        leftMotor.set(-ShooterConstants.kShooterSpeed);
+        x40.set(-ShooterConstants.kShooterSpeed);
     }
 
+    public void runx60() {
+        x60.set(ShooterConstants.kShooterSpeed);
+    }
+
+    public void runx40() {
+        x40.set(ShooterConstants.kShooterSpeed);
+    }
     /**
      * Stop the shooter motors.
      */
     public void stopShooter() {
-        leftMotor.set(0);
+        x40.set(0);
     }
 
     /**
      * Get the left shooter motor RPM.
      */
     public double getLeftRPM() {
-        return leftMotor.getVelocity().in(RPM);
+        return x40.getVelocity().in(RPM);
     }
 
     /**
      * Get the right shooter motor RPM.
      */
     public double getRightRPM() {
-        return rightMotor.getVelocity().in(RPM);
+        return x60.getVelocity().in(RPM);
     }
 
     // ==================== Command Factory Methods ====================
@@ -93,6 +104,13 @@ public class ShooterSubsystem extends SubsystemBase {
             .withName("Stop Shooter");
     }
 
+    public Command runKrakenx60() {
+        return runEnd(this::runx60, this::stopShooter)
+    }
+
+    public Command runKrakenx40() {
+        return runEnd(this::runx40, this::stopShooter)
+    }
     @Override
     public void periodic() {
         // Add telemetry here if needed

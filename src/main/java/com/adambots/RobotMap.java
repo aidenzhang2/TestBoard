@@ -21,32 +21,15 @@ public class RobotMap {
 
     // ==================== CAN IDs ====================
     // Shooter Prototype
-    public static final int kShooterLeftPort = 21;   // Kraken X60
-    public static final int kShooterRightPort = 22;  // Kraken X60 (follower)
-    public static final int kUptakePort = 20;        // Kraken X44
-    public static final int kCarouselPort = 23;      // Kraken X44
+    public static final int x60Port = 21;   
+    public static final int x40Port = 20;
 
-    // ==================== Motor Instances ====================
-    // Using BaseMotor allows easy swap between motor types (TalonFX, NEO, etc.)
-    // TalonFXMotor(portNum, isOnCANivore, supplyCurrentLimit, isKraken)
+    public static final int limitSwitch1Port = 7;
+    public static final int limitSwitch2Port = 6;   
 
-    // Shooter motors (Kraken X60)
-    public static final BaseMotor shooterLeftMotor = new TalonFXMotor(kShooterLeftPort, false, 60.0, true);
-    public static final BaseMotor shooterRightMotor = new TalonFXMotor(kShooterRightPort, false, 60.0, true);
+    public static final BaseMotor x60 = new TalonFXMotor(x60Port, false, 60.0, true);
+    public static final BaseMotor x40 = new TalonFXMotor(x40Port, false, 40.0, true);
 
-    // Hopper/Uptake motor (Kraken X44)
-    public static final BaseMotor uptakeMotor = new TalonFXMotor(kUptakePort, false, 40.0, true);
-
-    // Carousel motor (Kraken X44)
-    public static final BaseMotor carouselMotor = new TalonFXMotor(kCarouselPort, false, 40.0, true);
-
-    // ==================== Add Your Motors Here ====================
-    // Example:
-    // public static final int kIntakePort = 10;
-    // public static final BaseMotor intakeMotor = new TalonFXMotor(kIntakePort);
-    //
-    // public static final int kArmLeftPort = 30;
-    // public static final int kArmRightPort = 31;
-    // public static final BaseMotor armLeftMotor = new TalonFXMotor(kArmLeftPort);
-    // public static final BaseMotor armRightMotor = new TalonFXMotor(kArmRightPort);
+    public static final LimitSwitch limitSwitch1 = new LimitSwitch(limitSwitch1Port, false);
+    public static final LimitSwitch limitSwitch2 = new LimitSwitch(limitSwitch2Port, false);
 }
