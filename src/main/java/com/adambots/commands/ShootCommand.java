@@ -20,25 +20,4 @@ public class ShootCommand {
             
         ).withName("Shoot With Hopper");
     }
-
-    /**
-     * Command to reverse shooter, uptake, and carousel together while held.
-     * Useful for clearing jams.
-     */
-    public static Command reverseAll(ShooterSubsystem shooter) {
-        return Commands.parallel(
-            shooter.reverseShooterCommand()
-            
-        ).withName("Reverse All");
-    }
-
-    /**
-     * Command to stop shooter, uptake, and carousel (instant).
-     */
-    public static Command stopAll(ShooterSubsystem shooter) {
-        return Commands.parallel(
-            shooter.stopShooterCommand()
-            
-        ).withName("Stop All");
-    }
 }

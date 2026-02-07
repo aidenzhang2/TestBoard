@@ -22,11 +22,11 @@ public class RobotMap {
 
     // ==================== CAN IDs ====================
     // Shooter Prototype
-    public static final int x60Port = 21;   
-    public static final int x40Port = 20;
+    public static final int x60Port = 11;   
+    public static final int x40Port = 10;
 
-    public static final int limitSwitch1Port = 7;
-    public static final int limitSwitch2Port = 6;   
+    public static final int limitSwitch1Port = 4;
+    public static final int limitSwitch2Port = 5;   
 
     public static final BaseMotor x60 = new TalonFXMotor(x60Port, false, 60.0, true);
     public static final BaseMotor x40 = new TalonFXMotor(x40Port, false, 40.0, true);

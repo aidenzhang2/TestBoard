@@ -10,6 +10,7 @@ import com.adambots.lib.sensors.LimitSwitch;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * Shooter subsystem with two motors (left/right) for shooter wheels.
@@ -18,8 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final BaseMotor x60;
     private final BaseMotor x40;
-    private final LimitSwitch limitSwitch1;
-    private final LimitSwitch limitSwitch2;
+    private LimitSwitch limitSwitch1;
+    private LimitSwitch limitSwitch2;
 
     public ShooterSubsystem(BaseMotor x60, BaseMotor x40, LimitSwitch limitSwitch1, LimitSwitch limitSwitch2) {
         this.x60 = x60;
@@ -27,6 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
         this.limitSwitch1 = limitSwitch1; 
         this.limitSwitch2 = limitSwitch2;
         configureMotors();
+
     }
 
     private void configureMotors() {
@@ -35,9 +37,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // Right motor follows left motor in opposite direction (for shooter wheels)
         x60.setInverted(true);
-        x60.setStrictFollower(RobotMap.x60Port);
+       // x60.setStrictFollower(RobotMap.x60Port);
     }
 
+        public final Trigger limitSwitch1True = new Trigger(
+        ()-> limitSwitch1.isDetecting());
+
+        public final Trigger limitSwitch2True = new Trigger(
+        ()-> limitSwitch2.isDetecting());
+        
     /**
      * Run the shooter at the configured speed.
      */
@@ -53,18 +61,26 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command runx60() {
-        return runOnce(()->x60.set(ShooterConstants.kShooterSpeed));
+        System.out.println("diddy blud");
+        return runOnce(()->x60.set(ShooterConstants.kShooterSpeed)).withName("X60 Shooter");
+        
     }
 
     public Command runx40() {
-        return runOnce(()->x40.set(ShooterConstants.kShooterSpeed));
+        return runOnce(()->x40.set(ShooterConstants.kShooterSpeed)).withName("X40 Shooter");
         
     }
     /**
      * Stop the shooter motors.
      */
-    public void stopShooter() {
-        x40.set(0);
+    public Command stopShooter40() {
+        return runOnce(()->x40.set(0));
+
+    }
+
+    public Command stopShooter60() {
+        return runOnce(()->x60.set(0));
+
     }
 
     /**
@@ -87,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * Command to run the shooter while held.
      */
     public Command runShooterCommand() {
-        return runEnd(this::runShooter, this::stopShooter)
+        return runEnd(this::runShooter, this::stopShooter60)
             .withName("Run Shooter");
     }
 
@@ -95,7 +111,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * Command to reverse the shooter while held.
      */
     public Command reverseShooterCommand() {
-        return runEnd(this::reverseShooter, this::stopShooter)
+        return runEnd(this::reverseShooter, this::stopShooter60)
             .withName("Reverse Shooter");
     }
 
@@ -103,16 +119,16 @@ public class ShooterSubsystem extends SubsystemBase {
      * Command to stop the shooter (instant).
      */
     public Command stopShooterCommand() {
-        return runOnce(this::stopShooter)
+        return runOnce(this::stopShooter60)
             .withName("Stop Shooter");
     }
 
     public Command runKrakenx60() {
-        return runEnd(this::runx60, this::stopShooter);
+        return runEnd(this::runx60, this::stopShooter60);
     }
 
     public Command runKrakenx40() {
-        return runEnd(this::runx40, this::stopShooter);
+        return runEnd(this::runx40, this::stopShooter40);
     }
     @Override
     public void periodic() {
