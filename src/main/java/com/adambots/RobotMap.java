@@ -2,6 +2,7 @@ package com.adambots;
 
 import com.adambots.lib.actuators.BaseMotor;
 import com.adambots.lib.actuators.TalonFXMotor;
+import com.adambots.lib.sensors.*;
 import com.adambots.lib.sensors.LimitSwitch;
 
 /**
@@ -33,4 +34,6 @@ public class RobotMap {
 
     public static final LimitSwitch limitSwitch1 = new LimitSwitch(limitSwitch1Port, false);
     public static final LimitSwitch limitSwitch2 = new LimitSwitch(limitSwitch2Port, false);
+
+    public static final BaseAbsoluteEncoder turretEncoder = new CANCoder(0);
 }
