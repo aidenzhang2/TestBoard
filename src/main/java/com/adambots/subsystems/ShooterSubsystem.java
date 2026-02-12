@@ -5,12 +5,14 @@ import static edu.wpi.first.units.Units.RPM;
 import com.adambots.Constants.ShooterConstants;
 import com.adambots.RobotMap;
 import com.adambots.lib.actuators.BaseMotor;
-import com.adambots.lib.sensors.LimitSwitch;
-
+import com.adambots.lib.sensors.BaseAbsoluteEncoder;
+import com.adambots.lib.sensors.*;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.units.Units.*;
+import edu.wpi.first.units.measure.Angle;
 
 /**
  * Shooter subsystem with two motors (left/right) for shooter wheels.
@@ -21,12 +23,14 @@ public class ShooterSubsystem extends SubsystemBase {
     private final BaseMotor x40;
     private LimitSwitch limitSwitch1;
     private LimitSwitch limitSwitch2;
+    private BaseAbsoluteEncoder turretEncoder;
 
-    public ShooterSubsystem(BaseMotor x60, BaseMotor x40, LimitSwitch limitSwitch1, LimitSwitch limitSwitch2) {
+    public ShooterSubsystem(BaseMotor x60, BaseMotor x40, LimitSwitch limitSwitch1, LimitSwitch limitSwitch2, BaseAbsoluteEncoder turretEncoder) {
         this.x60 = x60;
         this.x40 = x40;
         this.limitSwitch1 = limitSwitch1; 
         this.limitSwitch2 = limitSwitch2;
+        this.turretEncoder = turretEncoder;
         configureMotors();
 
     }
@@ -97,6 +101,20 @@ public class ShooterSubsystem extends SubsystemBase {
         return x60.getVelocity().in(RPM);
     }
 
+    private Angle getTurretAngle(){
+        Angle position = turretEncoder.getPosition();
+        return position;
+    }
+    
+    /*private double getTurretAngle() {
+        double rawAngle = turretEncoder.getPosition().inDegrees();  // 0-360
+        double angle = rawAngle - ShooterConstants.kTurretEncoderOffset;
+        // Normalize to -180 to +180
+        if (angle > 180) angle -= 360;
+        if (angle < -180) angle += 360;
+        return angle;
+    }*/
+
     // ==================== Command Factory Methods ====================
 
     /**
@@ -130,6 +148,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command runKrakenx40() {
         return runEnd(this::runx40, this::stopShooter40);
     }
+
+    
     @Override
     public void periodic() {
         // Add telemetry here if needed
